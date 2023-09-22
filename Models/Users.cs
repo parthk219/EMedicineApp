@@ -16,5 +16,8 @@ namespace EMedicineApp.Models
         public string  Type { get; set; }
         public int  Status { get; set; }
         public DateTime  CreatedOn { get; set; }
+        public List<Medicine> listMedicines { get; set; }
+        public Medicine medicine { get; set; }
+
     }
 }

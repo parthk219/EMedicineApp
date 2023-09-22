@@ -9,6 +9,15 @@ namespace EMedicineApp.Models
     {
         public int statusCode { get; set; }
         public string statusMessage { get; set; }
+        public List<Users> listuser{get;set;}
+        public Users User { get; set; }
+        public Medicine medicine { get; set; }
+        public List<Medicine> listMedicines { get; set; }
+        public List<Order> ListOrder { get; set; }
+        public Order order { get; set; }
+        public List<OrderItems> ListItems { get; set; }
+        public OrderItems orderItems { get; set; }
+
     }
 }
 
