@@ -9,7 +9,7 @@ namespace EMedicineApp.Models
 {
     public class DAL
     {
-        public Response register(Users users,SqlConnection connection)
+        public Response register(Users users, SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand cmd = new SqlCommand("SP_Register", connection);
@@ -29,7 +29,61 @@ namespace EMedicineApp.Models
                 response.statusCode = 200;
                 response.statusMessage = "User registered successfully";
             }
+            else
+            {
+                response.statusCode = 100;
+                response.statusMessage = "Registration failed";
+            }
             return response;
         }
+
+
+        public Response Login(Users users, SqlConnection connection)
+        {
+            SqlDataAdapter da = new SqlDataAdapter("SP_Login", connection);
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.AddWithValue("@Email", users.Email);
+            da.SelectCommand.Parameters.AddWithValue("@Password", users.Password);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            Response response = new Response();
+            if (dt.Rows.Count > 0)
+            {
+                response.statusCode = 200;
+                response.statusMessage = "User Valid";
+
+            }
+            else
+            {
+                response.statusCode = 100;
+                response.statusMessage = "User not valid";
+            }
+            return response;
+
+        }
+        public Response viewUser(Users users,SqlConnection connection)
+        {
+            SqlDataAdapter da = new SqlDataAdapter("p_viewUser", connection);
+
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.AddWithValue("@ID", users.id);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            Response response = new Response();
+            if (dt.Rows.Count > 0)
+            {
+                response.statusCode = 200;
+                response.statusMessage = "User exists";
+            }
+            else
+            {
+                response.statusCode = 100;
+                response.statusMessage = "User does not exist";
+            }
+            return response;
+
+        }
+
     }
 }
+

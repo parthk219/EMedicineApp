@@ -22,12 +22,27 @@ namespace EMedicineApp.Controllers
 
         [HttpPost]
         [Route("registration")]
-        public Response register(Users users)
+        public Response register(Users users) // register new user 
         {
             Response response = new Response();
+            DAL dal = new DAL();
             SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Conn").ToString());
-           
+            response = dal.register(users, con);
             return response;
         }
+        [HttpPost]
+        [Route("login")]
+        public Response login(Users users)
+        {
+            DAL dal = new DAL();
+            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Conn").ToString());
+            Response response = new Response();
+            response = dal.Login(users, con);
+            return response;
+        }
+
+
+
+
     }
 }
