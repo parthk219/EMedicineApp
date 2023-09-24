@@ -13,5 +13,6 @@ namespace EMedicineApp.Models
         public decimal Discount { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
+        public int MedicineId { get; set; }
     }
 }

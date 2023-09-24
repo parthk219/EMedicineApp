@@ -118,6 +118,34 @@ namespace EMedicineApp.Models
 
             return response;
         }
+        public Response addToCart(Cart cart, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("sp_AddToCart", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@UnitPrice", cart.UnitPrice);
+            cmd.Parameters.AddWithValue("@Quantity", cart.Quantity);
+            cmd.Parameters.AddWithValue("@TotalPrice", cart.TotalPrice);
+            cmd.Parameters.AddWithValue("@MedicineID", cart.MedicineId);
+            cmd.Parameters.AddWithValue("@Discount", cart.Discount);
+            cmd.Parameters.AddWithValue("@UserId", cart.UserId);
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+            if (i > 0)
+            {
+                response.statusCode = 200;
+                response.statusMessage = "Item added successfully";
+            }
+            else
+            {
+                response.statusCode = 100;
+                response.statusMessage = "Item could not be added";
+            }
+
+            return response;
+        }
+
 
     }
 }
