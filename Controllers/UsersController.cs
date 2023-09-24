@@ -51,7 +51,15 @@ namespace EMedicineApp.Controllers
         return response;
          }
 
-
+        [HttpPost]
+        [Route("updateProfile")]
+        public Response updateProfile(Users users)
+        {
+            DAL dal = new DAL();
+            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Conn").ToString());
+            Response response = dal.updateProfile(users, con); 
+            return response;
+        }
 
     }
 }

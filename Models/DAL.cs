@@ -119,8 +119,6 @@ namespace EMedicineApp.Models
             return response;
         }
 
-
-
     }
 }
 
