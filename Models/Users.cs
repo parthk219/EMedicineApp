@@ -19,6 +19,6 @@ namespace EMedicineApp.Models
         public DateTime  CreatedOn { get; set; }
         public List<Medicine> listMedicines { get; set; }
         public Medicine medicine { get; set; }
-
+        public string OrderTypes { get; set; }
     }
 }

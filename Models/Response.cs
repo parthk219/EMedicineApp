@@ -7,6 +7,8 @@ namespace EMedicineApp.Models
 {
     public class Response
     {
+        internal object listOrders;
+
         public int statusCode { get; set; }
         public string statusMessage { get; set; }
         public List<Users> listuser{get;set;}

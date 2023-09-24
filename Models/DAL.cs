@@ -59,7 +59,7 @@ namespace EMedicineApp.Models
             return response;
 
         }
-        public Response viewUser(Users users,SqlConnection connection)
+        public Response viewUser(Users users, SqlConnection connection)
         {
             SqlDataAdapter da = new SqlDataAdapter("p_viewUser", connection);
 
@@ -71,12 +71,12 @@ namespace EMedicineApp.Models
             if (dt.Rows.Count > 0)
             {
                 users.id = Convert.ToInt32(dt.Rows[0]["ID"]);
-                users.FirstName = Convert.ToString(dt.Rows[0]["FirstName"]);             
-                users.LastName = Convert.ToString(dt.Rows[0]["LastName"]);                   
-                users.Email = Convert.ToString(dt.Rows[0]["Email"]);                   
-                users.Type = Convert.ToString(dt.Rows[0]["Type"]);                   
-                users.fund = Convert.ToDecimal(dt.Rows[0]["Fund"]);                  
-                users.CreatedOn = Convert.ToDateTime(dt.Rows[0]["CreatedOn"]); 
+                users.FirstName = Convert.ToString(dt.Rows[0]["FirstName"]);
+                users.LastName = Convert.ToString(dt.Rows[0]["LastName"]);
+                users.Email = Convert.ToString(dt.Rows[0]["Email"]);
+                users.Type = Convert.ToString(dt.Rows[0]["Type"]);
+                users.fund = Convert.ToDecimal(dt.Rows[0]["Fund"]);
+                users.CreatedOn = Convert.ToDateTime(dt.Rows[0]["CreatedOn"]);
                 users.Password = Convert.ToString(dt.Rows[0]["Password"]);
                 response.statusCode = 200;
                 response.statusMessage = "User exists";
@@ -145,8 +145,74 @@ namespace EMedicineApp.Models
 
             return response;
         }
+        public Response placeOrder(Users users, SqlConnection connection)
+        {
+
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("sp_PlaceOrder", connection); cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ID", users.id); connection.Open(); int i = cmd.ExecuteNonQuery();
+            connection.Close();
+            if (i > 0)
+            {
+                response.statusCode = 200;
+                response.statusMessage = "Order has been placed successfully";
+
+            }
+            else
+            {
+
+                response.statusCode = 100;
+                response.statusMessage = "Order could not be placed";
+            }
+            return response;
 
 
+
+        }
+        public Response orderList(Users users, SqlConnection connection)
+        {
+            Response response = new Response();
+            List<Order> listOrder = new List<Order>();
+            SqlDataAdapter da = new SqlDataAdapter("sp_OrderList", connection);
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.AddWithValue("@Type", users.Type);
+            da.SelectCommand.Parameters.AddWithValue("@ID", users.id);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Order order = new Order();
+                    order.Id = Convert.ToInt32(dt.Rows[i]["ID"]);
+                    order.OrderNo = Convert.ToString(dt.Rows[i]["OrderNo"]);
+                    order.OrderTotal = Convert.ToDecimal(dt.Rows[i]["OrderTotal"]);
+                    order.OrderStatus = Convert.ToString(dt.Rows[i]["OrderStatus"]); // Fixed the typo here
+                    listOrder.Add(order);
+                }
+                if (listOrder.Count > 0)
+                {
+                    response.statusCode = 200;
+                    response.statusMessage = "Order details fetched";
+                    response.ListOrder = listOrder;
+                }
+                else
+                {
+                    response.statusCode = 100;
+                    response.statusMessage = "Order details are not available";
+                    response.listOrders = null;
+                }
+            }
+            else
+            {
+                response.statusCode = 100; // Provide an appropriate status code
+                response.statusMessage = "No orders found"; // Provide an appropriate message
+                response.ListOrder = null; // Set ListOrder to null or an empty list
+            }
+
+            return response;
+
+
+        }
     }
 }
-

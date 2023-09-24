@@ -31,5 +31,30 @@ namespace EMedicineApp.Controllers
             return response;
 
         }
+        [HttpPost]
+        [Route("placeOrder")]
+        public Response placeOrder(Users users)
+        {
+            DAL dal = new DAL();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Conn").ToString());
+            Response response = dal.placeOrder(users, connection);
+            return response;
+        }
+
+
+        [HttpGet]
+        [Route("orderList")]
+        public Response OrderList(Users users)
+        {
+            DAL dal = new DAL();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Conn").ToString());
+            Response response = dal.orderList(users, connection);
+            return response;
+        }
+
+
+
+
+
     }
 }
