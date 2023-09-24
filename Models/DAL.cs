@@ -72,6 +72,14 @@ namespace EMedicineApp.Models
             Response response = new Response();
             if (dt.Rows.Count > 0)
             {
+                users.id = Convert.ToInt32(dt.Rows[0]["ID"]);
+                users.FirstName = Convert.ToString(dt.Rows[0]["FirstName"]);             
+                users.LastName = Convert.ToString(dt.Rows[0]["LastName"]);                   
+                users.Email = Convert.ToString(dt.Rows[0]["Email"]);                   
+                users.Type = Convert.ToString(dt.Rows[0]["Type"]);                   
+                users.fund = Convert.ToDecimal(dt.Rows[0]["Fund"]);                  
+                users.CreatedOn = Convert.ToDateTime(dt.Rows[0]["CreatedOn"]); 
+                users.Password = Convert.ToString(dt.Rows[0]["Password"]);
                 response.statusCode = 200;
                 response.statusMessage = "User exists";
             }
