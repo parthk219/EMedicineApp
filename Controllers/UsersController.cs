@@ -41,6 +41,15 @@ namespace EMedicineApp.Controllers
             return response;
         }
 
+        [HttpPost]
+        [Route("viewUser")]
+        public Response viewUser(Users users)
+        { 
+        DAL dal = new DAL();
+        SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Conn").ToString());
+        Response response = dal.viewUser(users, con); 
+        return response;
+         }
 
 
 

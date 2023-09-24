@@ -36,8 +36,6 @@ namespace EMedicineApp.Models
             }
             return response;
         }
-
-
         public Response Login(Users users, SqlConnection connection)
         {
             SqlDataAdapter da = new SqlDataAdapter("SP_Login", connection);
@@ -91,6 +89,37 @@ namespace EMedicineApp.Models
             return response;
 
         }
+        public Response updateProfile(Users users, SqlConnection connection)
+        {
+            Response response = new Response();
+
+            SqlCommand cmd = new SqlCommand("sp_updateProfile", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@FirstName", users.FirstName);
+            cmd.Parameters.AddWithValue("@LastName", users.LastName);
+            cmd.Parameters.AddWithValue("@Password", users.Password);
+            cmd.Parameters.AddWithValue("@Email", users.Email);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i > 0)
+            {
+                response.statusCode = 200;
+                response.statusMessage = "Profile updated successfully.";
+            }
+            else
+            {
+                response.statusCode = 100;
+                response.statusMessage = "Failed to update profile.";
+            }
+
+            return response;
+        }
+
+
 
     }
 }
